@@ -7,7 +7,7 @@ use std::{collections::HashMap, env, fs};
 use serde::{Deserialize, Serialize};
 use dotenv::dotenv;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 struct UserTasks {
     tasks: HashMap<u64, Vec<String>>, // user_id: [task1, task2]
 }
@@ -65,11 +65,15 @@ impl EventHandler for Handler {
 
         if content == "!ping" {
             let _ = msg.channel_id.say(&ctx.http, "Pong!").await;
+        } else if content == "!add" {
+            let _ = msg.channel_id.say(&ctx.http, "⚠️ タスク内容を入力してください。例: `!add 牛乳を買う`").await;
         } else if content.starts_with("!add ") {
             let task = content[5..].trim();
             if !task.is_empty() {
                 tasks.add_task(user_id, task.to_string());
                 let _ = msg.channel_id.say(&ctx.http, format!("✅ タスクを追加しました：「{}」", task)).await;
+            } else {
+                let _ = msg.channel_id.say(&ctx.http, "⚠️ タスク内容を入力してください。例: `!add 勉強する`").await;
             }
         } else if content == "!list" {
             let user_tasks = tasks.list_tasks(user_id);
