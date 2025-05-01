@@ -1,1 +1,16 @@
+# ビルド成果物
+/target/
+
+# 環境設定
+**/*.rs.bk
+
+# IDEやエディタのファイル
+*.swp
+*.swo
+*.bak
+*.tmp
+*.vscode/
+.idea/
+
+# 環境ファイル
 .env
